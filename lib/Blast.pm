@@ -4,11 +4,9 @@ package Blast;
 use strict;
 use FindBin;
 use lib "$FindBin::Bin/..";
-use Subfunctions qw(split_seq reverse_complement meld_matrices);
+use Subfunctions qw(split_seq reverse_complement);
 use Data::Dumper;
 use XML::Simple;
-#no, we should use XML::XPath!
-
 
 BEGIN {
 	require Exporter;
@@ -236,9 +234,6 @@ sub revcomp_hsp {
 	my $hit_to = $hsp->{'hit-to'};
 	$hsp->{'hit-to'} = $hsp->{'hit-from'};
 	$hsp->{'hit-from'} = $hit_to;
-# 	my $query_to = $hsp->{'query-to'};
-# 	$hsp->{'query-to'} = $hsp->{'query-from'};
-# 	$hsp->{'query-from'} = $query_to;
 	$hsp->{'qseq'} = lc(reverse_complement($hsp->{'qseq'}));
 	$hsp->{'hseq'} = lc(reverse_complement($hsp->{'hseq'}));
 	$hsp->{'hit-frame'} = -1 * $hsp->{'hit-frame'};
