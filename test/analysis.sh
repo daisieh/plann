@@ -14,7 +14,7 @@ do
 	for FASTA in $SAMPLES
 	do
 		echo "comparing $FASTA.fasta to $GB"
-		perl $REPOS/plann/plann.pl -ref $GB -fasta $FASTA.fasta -out $GB.$FASTA -organism "Populus balsamifera" -sample "bals"
+		perl $REPOS/plann/plann.pl -ref $GB -fasta $FASTA.fasta -out $GB.$FASTA
 	done;
 done;
 
@@ -22,6 +22,15 @@ head -n 2 *.results.txt > all_results.txt
 
 echo "Running tbl2asn"
 tbl2asn -Vbv -p . -t plann.sbt
+
+echo "Looking at proteins"
+for GBF in *.gbf
+do
+	if grep -Eq '/translation="[^M]' $GBF
+		then echo "$GBF has errors in translation."
+		else echo "$GBF is fine."
+	fi
+done;
 
 # library(ggplot2)
 # data <- read.table("~/Documents/DRAFTS/plann/results.tsv")
