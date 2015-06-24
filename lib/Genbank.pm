@@ -161,7 +161,12 @@ sub clone_features {
 			my $interval_str = flatten_interval ($gene->{'region'});
 			my @gene_interval = ($interval_str);
 			# we need to disambiguate different copies of the gene
-			my $genename = $gene->{'qualifiers'}->{'gene'} . "_$gene_id";
+			my $genename = "";
+			if ($gene->{'qualifiers'}->{'locus_tag'}) {
+				$genename = $gene->{'qualifiers'}->{'locus_tag'} . "_$gene_id";
+			} else {
+				$genename = $gene->{'qualifiers'}->{'gene'} . "_$gene_id";
+			}
 			my $strand = "+";
 			my $reg = @{$gene->{'region'}}[0];
 			my ($start, $end) = split (/\.\./, $reg);

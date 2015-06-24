@@ -250,8 +250,8 @@ Returns an array of hashes for each feature:
 =cut
 
 sub align_regions_to_reference {
-	my $ref_hash = shift;
-	my $ref_array = shift;
+	my $region_hash = shift;
+	my $region_array = shift;
 	my $refgbfile = shift;
 
 	my $ref_gene_array = Genbank::feature_table_from_genbank ($refgbfile);
@@ -260,11 +260,25 @@ sub align_regions_to_reference {
 	my @final_gene_array = ();
 	my $new_gene_count = 0;
 	my $dest_gene_count = 0;
-	my $new_gene = $ref_hash->{@$ref_array[$new_gene_count++]};
+	my $new_gene = $region_hash->{@$region_array[$new_gene_count++]};
 	my $dest_gene = @$ref_gene_array[$dest_gene_count++];
 
 	while (defined $dest_gene) {
-		if ($new_gene->{'qualifiers'}->{'gene'} ne $dest_gene->{'qualifiers'}->{'gene'}) {
+			my $destgenename = "";
+			if ($dest_gene->{'qualifiers'}->{'locus_tag'}) {
+				$destgenename = $dest_gene->{'qualifiers'}->{'locus_tag'};
+			} else {
+				$destgenename = $dest_gene->{'qualifiers'}->{'gene'};
+			}
+			my $newgenename = "";
+			if ($new_gene->{'qualifiers'}->{'locus_tag'}) {
+				$newgenename = $new_gene->{'qualifiers'}->{'locus_tag'};
+			} else {
+				$newgenename = $new_gene->{'qualifiers'}->{'gene'};
+			}
+
+
+		if ($newgenename ne $destgenename) {
 			$dest_gene = @$ref_gene_array[$dest_gene_count++];
 			next;
 		}
@@ -291,24 +305,33 @@ sub align_regions_to_reference {
 			$newcontains->{'type'} = $subcomponent->{'type'};
 			$newcontains->{'region'} = \@final_regions;
 			foreach my $subcomp (@{$new_gene->{'contains'}}) {
-				my $reg = "$ref_hash->{$subcomp}->{'start'}..$ref_hash->{$subcomp}->{'end'}";
+				my $reg = "$region_hash->{$subcomp}->{'start'}..$region_hash->{$subcomp}->{'end'}";
+				if ($region_hash->{$subcomp}->{'strand'} eq "-") {
+					$reg = "$region_hash->{$subcomp}->{'end'}..$region_hash->{$subcomp}->{'start'}";
+				} 
+				
 				push @final_regions, $reg;
 			}
 		}
 
 		# if there weren't any regions in subcomponents, make the region out of the main gene region
 		if (@final_regions == 0) {
-			push @final_regions, "$new_gene->{'start'}..$new_gene->{'end'}";
+			my $reg = "$new_gene->{'start'}..$new_gene->{'end'}";
+			if ($new_gene->{'strand'} eq "-") {
+				$reg = "$new_gene->{'end'}..$new_gene->{'start'}";
+			} 
+			
+			push @final_regions, $reg;
 		}
 		#	region: this should be a stringified max interval from the new gene
 		$final_gene->{'region'} = Genbank::max_interval(\@final_regions);
 
 		push @final_gene_array, $final_gene;
-		$new_gene = $ref_hash->{@$ref_array[$new_gene_count++]};
+		$new_gene = $region_hash->{@$region_array[$new_gene_count++]};
 
-		if (!defined $new_gene) {
-			last;
-		}
+# 		if (!defined $new_gene) {
+# 			last;
+# 		}
 	}
 	return \@final_gene_array;
 }
