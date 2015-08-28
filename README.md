@@ -16,3 +16,14 @@ Options:
       -organism:        [optional: scientific name for Genbank annotation]
       -sample:          the name of the plastome sample (default is the name in the fasta file)
 
+# Updates
+- Aug 28, 2015: I have recently discovered that the `/r` option for regular expressions was only introduced in Perl v5.14, so versions earlier than that will fail to compile Plann.pl properly. If this is the case, you will get this error:
+
+```
+Bareword found where operator expected at plann-master/lib/Subfunctions.pm line 200, near "tr/[AGCT]//dr"
+Bareword found where operator expected at plann-master/lib/Subfunctions.pm line 222, near "tr/[AGCT]//dr"
+syntax error at plann-master/lib/Subfunctions.pm line 200, near "tr/[AGCT]//dr"
+syntax error at plann-master/lib/Subfunctions.pm line 222, near "tr/[AGCT]//dr"
+```
+
+You might have to install a new version of Perl; I recommend using Homebrew (`brew install perl`) if you have it. Make sure that, after installing a new Perl, that you're executing the correct version.
