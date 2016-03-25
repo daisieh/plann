@@ -13,7 +13,7 @@ use Data::Dumper;
 
 my $help = 0;
 my $outfile = "output";
-my $gbfile = "";
+my $rawgbfile = "";
 my $fastafile = "";
 my $orgname = "";
 my $samplename = "";
@@ -22,7 +22,7 @@ if (@ARGV == 0) {
     pod2usage(-verbose => 1);
 }
 
-GetOptions ('reference|gb|genbank=s' => \$gbfile,
+GetOptions ('reference|gb|genbank=s' => \$rawgbfile,
 			'fastafile=s' => \$fastafile,
 			'outfile=s' => \$outfile,
 			'organism=s' => \$orgname,
@@ -33,12 +33,12 @@ if ($help) {
     pod2usage(-verbose => 2);
 }
 
-if ($gbfile !~ /\.gbf*$/) {
+if ($rawgbfile !~ /\.gbf*$/) {
 	print "reference file needs to be a fully annotated Genbank file.\n";
 	exit;
 }
 
-if ($gbfile eq "") {
+if ($rawgbfile eq "") {
 	print "need to supply a Genbank reference file (-reference).\n";
 	exit;
 }
@@ -47,6 +47,15 @@ if ($fastafile eq "") {
 	print "need to supply a fasta-formatted plastome sequence to annotate (-fasta).\n";
 	exit;
 }
+
+# a lot of genbank files seem to have windows line endings: we should convert to Unix endings before letting them go through Blast.
+my ($fh, $gbfile) = tempfile();
+open RAW_FH, "<:crlf", $rawgbfile;
+while (my $line=readline RAW_FH) {
+	print $fh $line;
+}
+close RAW_FH;
+close $fh;
 
 my ($fastahash, $fastaarray) = parse_fasta($fastafile);
 
