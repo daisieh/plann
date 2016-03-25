@@ -17,7 +17,12 @@ Options:
       -sample:          the name of the plastome sample (default is the name in the fasta file)
 
 # Updates
-- Aug 28, 2015: I have recently discovered that the `/r` option for regular expressions was only introduced in Perl v5.14, so versions earlier than that will fail to compile Plann.pl properly. If this is the case, you will get this error:
+- Mar 25, 2016: 
+	Added line breaks in `analysis.sh` to help certain versions of bash.
+	Blast on Unix does not seem to like Windows line endings, which seems weird because the Genbank files downloaded from NCBI seem to come with them. Plann now rewrites temp versions of the genbank files with uniformly Unix line endings before running.
+	
+- Aug 28, 2015: 
+	I have recently discovered that the `/r` option for regular expressions was only introduced in Perl v5.14, so versions earlier than that will fail to compile Plann.pl properly. If this is the case, you will get this error:
 
 ```
 Bareword found where operator expected at plann-master/lib/Subfunctions.pm line 200, near "tr/[AGCT]//dr"
