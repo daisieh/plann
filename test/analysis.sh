@@ -27,8 +27,10 @@ for GBF in *.gbf
 do
 	echo "Looking at proteins in $GBF:"
 	if grep -E '/translation="[^M]' $GBF
-		then echo "ERRORS! $GBF has errors in translation."
-		else echo "$GBF is fine."
+		then 
+			echo "ERRORS! $GBF has errors in translation."
+		else 
+			echo "$GBF is fine."
 	fi
 done;
 
@@ -38,8 +40,10 @@ do
 	grep -E '/translation=' $GB > $GB.orig
 	grep -E '/translation=' $GB.$GB.gbf > $GB.new
 	if diff $GB.orig $GB.new
-		then echo "$GB is fine"
-		else echo "$GB is not identical to $GB.$GB.gbf"
+		then 
+			echo "$GB is fine"
+		else 
+			echo "$GB is not identical to $GB.$GB.gbf"
 	fi
 done;
 

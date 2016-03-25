@@ -49,7 +49,8 @@ if ($fastafile eq "") {
 }
 
 # a lot of genbank files seem to have windows line endings: we should convert to Unix endings before letting them go through Blast.
-my ($fh, $gbfile) = tempfile();
+my ($volume, $directories, $gbfilename) = File::Spec->splitpath($rawgbfile);
+my ($fh, $gbfile) = tempfile("$gbfilename.XXXX");
 open RAW_FH, "<:crlf", $rawgbfile;
 while (my $line=readline RAW_FH) {
 	print $fh $line;
