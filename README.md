@@ -15,6 +15,26 @@ Options:
       -outfile:         the output name (default is "output")
       -organism:        [optional: scientific name for Genbank annotation]
       -sample:          the name of the plastome sample (default is the name in the fasta file)
+      
+Before you run:
+	If you don't already have it you will have to install a module from cpan (Comprehensive Perl Archive Network)
+	$cpan  (this will ask you for some options, going with the dafaults worked fine)
+	$install XML::Simple
+	
+
+After you run:
+	Check the ...results.txt file to see any missing genes that you might want to check prior to submission.  If you fix these in your sequence, you can run plann again to make an updated annotation.
+	
+	The files produced by plann can be assembled to make a complete .sqn archive to submit to GenBank, or to further edit with Seqin
+	1) copy the plann.sbt template from the test/ directory to the directory containing your output from plann
+	2) use a text editor to edit the plann.sbt file to replace the author's information with your information (or 
+	you do the edits later in Seqin after you assemble the complete .sqn file).
+	3) While in the directory with all the files use tbl2ase (available from NCBI) to assemble the complete 
+	.sqn file:
+	$tbl2asn -Vbv -p . -t plann.sbt
+	This can be directly submitted, but it is better to check and edit with Seqin prior to submission.
+
+
 
 # Updates
 - Mar 25, 2016: 
