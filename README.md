@@ -36,7 +36,7 @@ The files produced by plann can be assembled to make a complete .sqn archive to 
 3. While in the directory with all the files use `tbl2asn` ([available from NCBI](https://www.ncbi.nlm.nih.gov/genbank/tbl2asn2/)) to assemble the complete .sqn file:
 
 	```Shell
-	$tbl2asn -Vbv -p . -t plann.sbt
+	$ tbl2asn -Vbv -p . -t plann.sbt
 	```
 	
   This can be directly submitted, but it is better to check and edit with Sequin prior to submission.
