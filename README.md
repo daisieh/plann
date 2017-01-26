@@ -29,10 +29,10 @@ $ cpan install XML::Simple
 ## After you run:
 Check the `.results.txt` file to see any missing genes that you might want to check prior to submission. If you fix these in your sequence, you can run plann again to make an updated annotation.
 	
-The files produced by plann can be assembled to make a complete .sqn archive to submit to GenBank, or to further edit with Sequin.
+The files produced by plann can be assembled to make a complete .sqn archive to submit to GenBank, or to further edit with [Sequin](https://www.ncbi.nlm.nih.gov/Sequin/).
 
-1. copy the plann.sbt template from the test/ directory to the directory containing your output from plann
-2. use a text editor to edit the plann.sbt file to replace the author's information with your information (or you do the edits later in Seqin after you assemble the complete .sqn file).
+1. copy the `plann.sbt` template from the `test/` directory to the directory containing your output from plann
+2. use a text editor to edit the `plann.sbt` file to replace the author's information with your information (or do the edits later in Sequin after you assemble the complete .sqn file, but don't forget to do this! Otherwise the credit for the sequence goes to Daisie Huang).
 3. While in the directory with all the files use `tbl2asn` ([available from NCBI](https://www.ncbi.nlm.nih.gov/genbank/tbl2asn2/)) to assemble the complete .sqn file:
 
 	```Shell
