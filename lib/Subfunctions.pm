@@ -184,7 +184,7 @@ sub blast_to_genbank {
 
 		# if there weren't any components, check to see if there were hits for the main gene
 		if (@{$ref_hash->{$main_gene}->{'contains'}} == 0) {
-			if (@{$ref_hash->{$main_gene}->{'hsps'}} == 0) {
+			if ((not exists($ref_hash->{$main_gene}->{'hsps'})) or @{$ref_hash->{$main_gene}->{'hsps'}} == 0) {
 				$ref_hash->{$main_gene}->{'complete'} = 0;
 			} else {
 				my $best_hit = @{$ref_hash->{$main_gene}->{'hsps'}}[0];
